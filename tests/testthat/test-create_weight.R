@@ -2,6 +2,8 @@
 # set seed to reproduce, since it sample from runif
 set.seed(1)
 
+
+# This test might not past now, since not using euclidean norm anymore
 test_that("Correct output structure", {
   j <- 3
   p <- 12

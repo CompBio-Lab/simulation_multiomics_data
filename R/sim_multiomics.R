@@ -35,7 +35,8 @@ sim_multiomics <- function(n, p, j, dt, rho=1, pc_mu=0, add_dt=TRUE) {
     output_list[["Y"]] <- y
   }
 
-  # Create weights W being a j x p matrix, sampled from unif(-j, j)
+  # ~~~Create weights W being a j x p matrix, sampled from unif(-j, j)~~~~ OLD
+  # Create weights W being a p x p matrix, sampled from unif(-j, j)
   W <- create_weight(j, p, min_val=-j, max_val=j)
 
   # Apply "individual" mat multiply for each column x row
@@ -64,16 +65,33 @@ sim_multiomics <- function(n, p, j, dt, rho=1, pc_mu=0, add_dt=TRUE) {
 
 
 
+# TODO: .....
+# create_weight <- function(j, p, min_val=-3, max_val=3, type="O") {
+#   # Sample from uniform distribution
+#   unif_data <- runif(j * p, min = min_val, max = max_val)
+#   # Creates j x p matrix
+#   W <- matrix(unif_data, nrow = j, ncol=p)
+#   # Then divide each row by its row norm
+#   W <- apply(W, MARGIN = 1, FUN = function(x) x/norm(as.matrix(x), type=type))
+#   # Lastly transpose it back to be j x p
+#   t(W)
+# }
 
 create_weight <- function(j, p, min_val=-3, max_val=3, type="O") {
   # Sample from uniform distribution
-  unif_data <- runif(j * p, min = min_val, max = max_val)
+  #unif_data <- runif(j * p, min = min_val, max = max_val)
+
+  # [ -0.3, -0.2 ] u [0.2, 0.3]
+  d1 <- runif(p^2, min = -0.3, max = -0.2)
+  d2 <- runif(p^2, min = 0.2, max = 0.3)
+  unif_data <- c(d1, d2) |> sample(j*p)
   # Creates j x p matrix
   W <- matrix(unif_data, nrow = j, ncol=p)
+  W
   # Then divide each row by its row norm
-  W <- apply(W, MARGIN = 1, FUN = function(x) x/norm(as.matrix(x), type=type))
+  #W <- apply(W, MARGIN = 1, FUN = function(x) x/norm(as.matrix(x), type=type))
   # Lastly transpose it back to be j x p
-  t(W)
+  #t(W)
 }
 
 create_sigma <- function(rho, j) {

@@ -10,8 +10,8 @@ get_feats_df <- function(mod, dname, true_var_label="true",
       dataset_name = dname
     ) |>
     dplyr::mutate(feature_type = case_when(
-      stringr::str_detect(feature, true_var_label) ~ true_var_label,
-      TRUE ~ noise_var_label
+      stringr::str_detect(feature, noise_var_label) ~ noise_var_label,
+      TRUE ~ true_var_label
     )
     ) |>
     dplyr::select(feature, view, coef, method, dataset_name, feature_type)

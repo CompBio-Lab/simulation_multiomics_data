@@ -13,14 +13,14 @@
 #' \dontrun{
 #' sim_multiomics(n=10,p=10,j=3,rho=1)
 #' }
-sim_multiomics <- function(n, p, j, dt, rho=1, pc_mu=0, add_dt=TRUE) {
+sim_multiomics <- function(n, p, j, dt, rho=0, pc_mu=0, add_dt=TRUE) {
 
   # This would be the output_list init
   output_list <- list()
 
   # Then calls create 2 parts, one is true trend , one is noise trend
   # Cor / Cov mat for all the omics, diag is itself hence 1
-  sigma_mat <- create_sigma(rho, j)
+  sigma_mat <- create_sigma(rho=rho, j=j)
   # Each col is view's pc
   pcs <- MASS::mvrnorm(n = n, mu = rep(pc_mu, j), Sigma=sigma_mat)
   # Shift the pcs to generate y like that

@@ -5,9 +5,10 @@ sim_data <- function(n, p, j, dt, rho, pc_mu) {
   true_num_vars <- floor(p * 0.1) # Make sure p is even
   noise_num_vars <- p - true_num_vars
   true_omics_list  <- sim_multiomics(n=n, p=true_num_vars, j=j, dt=dt,
-                                     rho=rho, pc_mu = pc_mu, add_dt=TRUE)
+                                     pc_mu=pc_mu, rho=rho, add_dt=TRUE)
+  # For the non signal variables, force its correlation to be 0
   noise_omics_list <- sim_multiomics(n=n, p=noise_num_vars, j=j, dt=dt,
-                                     rho=rho, pc_mu = pc_mu, add_dt=FALSE)
+                                     pc_mu=pc_mu, rho=0, add_dt=FALSE)
 
   # Then merge the X together from both list
   X <- mapply(function(x_list, y_list) {
